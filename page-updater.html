@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Page Updater</title>
+    <!-- 
+		@description: This page will allow you to keep a webpage refershed every certain amount of time 
+	-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+		
+		function refreshPage() {
+			var nInterval = parseInt($('#time_interval').val()) * 1000 ;
+			var strTargetUrl = $('#target_url').val();
+			if (bStopped === false) {
+				console.log("Refresher");
+				$("#mainwrapper iframe").attr('src', strTargetUrl);
+			}
+			setTimeout(refreshPage, nInterval);
+		}
+		
+		$(document).ready(function () {
+			bStopped = false;
+			
+			var strTargetUrl = $('#target_url').val();
+			var nInterval = parseInt($('#time_interval').val()) * 1000 ;
+			$("#start_button").css({'background-color': '#BBF3F7'});
+
+			$("#mainwrapper iframe").attr('src', strTargetUrl);
+			setTimeout(refreshPage, nInterval);
+			
+			$("#start_button").click(function () {
+				bStopped = false;
+				$("#start_button").css({'background-color': '#BBF3F7'});
+				$("#stop_button").css({'background-color': ''});
+			});
+
+			$("#stop_button").click(function () {
+				bStopped = true;
+				$("#start_button").css({'background-color': ''});
+				$("#stop_button").css({'background-color': '#F95454'});
+				
+			});			
+			
+		});
+	</script>
+    
+    <style type="text/css">
+		body ,html {
+			margin:0;
+			padding:0;
+			height:100%;
+			font-family:arial;
+		}
+		#control-panel {
+			height: 30px;
+			text-align: center;
+		}
+		#mainwrapper iframe {
+			height: 800px;
+			width:100%;
+		}
+		#target_url {
+			width:500px;
+		}
+		
+	</style>
+  </head>
+  <body>
+	<div id="mainwrapper">
+		<div id="control-panel">
+			<b>Target url: </b>
+			<input id="target_url" type="text" value="https://www.yahoo.com/" />
+			&nbsp;&nbsp;
+			<b>Time Interval (seconds)</b>
+			<input id="time_interval" type="text" value="60" />
+			&nbsp;&nbsp;
+			<button type="button" id="start_button">Start</button>
+			<button type="button" id="stop_button">Stop</button>
+		</div>
+		<iframe src=""></iframe>
+	</div>
+  </body>
+</html>
+
+
